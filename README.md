@@ -15,7 +15,7 @@ A few resources related to teaching
   
  #### Instrucctions: 
  1. Go to site you wish to download PDF from and search for the specific PDF. Ex: [https://orientbook.net](https://orientbook.net/abc)
- 2. Press `Ctrl+Shift + i` to open console and paste the code into the js console.
+ 2. Press `Ctrl+Shift + i` to open console and paste [the code](https://github.com/TravisA9/KinderKids/blob/main/docs/pdfHackMultiple.js "Paste to js Consol") into the js console.
  3. While the desired PDF is loading -and before it finishes loading- press `Enter` to execute the code. This will create the controls you need and establish a connection to the document generator.
  4. Choose the settings you want using the injected controls. For example, if you wat your documents to have a naming scheme like this: page_001.png , type in the word "page_" and ".png" . The numbers will automatically be inserted and incremented.
  5. Scroll through 10 or 20 pages of the document to ensure that those pages are generated* and click "Generate". This should save all of the existing pages at once into the directory of your choice.
