@@ -4,11 +4,11 @@
 
 
 <style type="text/css">
-	@keyframes fadey { 
-0% { opacity: 0; }
-15% { opacity: 1; }
-85% { opacity: 1; }
-100% { opacity: 0; }
+@keyframes fadey { 
+	0% { opacity: 0; }
+	15% { opacity: 1; }
+	85% { opacity: 1; }
+	100% { opacity: 0; }
 }
 body { 
   font-family: Avenir, Arial, sans-serif; 
@@ -21,6 +21,8 @@ figure#slideshow {
   position: relative; 
   border: 1px solid #fff;
   cursor: pointer;
+  height:100vh;
+  background: #333;
 }
 figure#slideshow img { 
   position: absolute; 
@@ -60,7 +62,9 @@ figure#slideshow img:first-child { position: relative; }
 <body style="background:#513a82; ">
 	<!-- click to bring the slideshow in and out of fullscreen mode -->
 <figure id="container" onclick="fullScreen(this)">
-  <figure id="slideshow"></figure>
+  <figure id="slideshow">
+  	<div style="font-size:100px; color:white; position:absolute; top:calc(50% - 50px); left:calc(50% - 230px); display: inline-block;">Super Art!</div>
+</figure>
 </figure>
 
 </body>
@@ -68,28 +72,19 @@ figure#slideshow img:first-child { position: relative; }
 <script type="text/javascript">
 //////////////////////////////////////////////////////////////////////
 function cancelFullScreen() {
-    if (document.cancelFullScreen) {
-        document.cancelFullScreen();
-    } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-    } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-    } else if (document.msCancelFullScreen) {
-        document.msCancelFullScreen();
-    }
+    if (document.cancelFullScreen) {  document.cancelFullScreen(); } 
+    else if (document.mozCancelFullScreen) { document.mozCancelFullScreen(); } 
+    else if (document.webkitCancelFullScreen) { document.webkitCancelFullScreen(); } 
+    else if (document.msCancelFullScreen) { document.msCancelFullScreen(); }
     link = document.getElementById("container");
     link.removeAttribute("onclick");
     link.setAttribute("onclick", "fullScreen(this)");
 }
 //////////////////////////////////////////////////////////////////////
 function fullScreen(element) {
-    if (element.requestFullScreen) {
-        element.requestFullScreen();
-    } else if (element.webkitRequestFullScreen) {
-        element.webkitRequestFullScreen();
-    } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-    }
+    if (element.requestFullScreen) { element.requestFullScreen(); } 
+    else if (element.webkitRequestFullScreen) { element.webkitRequestFullScreen(); } 
+    else if (element.mozRequestFullScreen) { element.mozRequestFullScreen(); }
     link = document.getElementById("container");
     link.removeAttribute("onclick");
     link.setAttribute("onclick", "cancelFullScreen()");
@@ -97,34 +92,26 @@ function fullScreen(element) {
 //////////////////////////////////////////////////////////////////////
 window.onload = function() {
 
-
 var pics = []
-
-for (var i = 1; i < 118; i++) {
-	let num = i.toString().padStart(3, '0')
-    pics.push('<img src="images/' + num + '.jpg" alt>')
-}
-
-pics.sort(function(a, b){return 0.5 - Math.random()});
-
-document.getElementById('slideshow').innerHTML = pics.join('')
+	for (var i = 1; i < 118; i++) {
+		let num = i.toString().padStart(3, '0')
+	    pics.push('<img src="images/' + num + '.jpg" alt>')
+	}
+	pics.sort(function(a, b){return 0.5 - Math.random()});
+	document.getElementById('slideshow').innerHTML += pics.join('')
 
 
-
-
-  imgs = document.getElementById('slideshow').children;
-
-
-  interval = 8000;
-  currentPic = 0;
-  imgs[currentPic].style.webkitAnimation = 'fadey '+interval+'ms';
-  imgs[currentPic].style.animation = 'fadey '+interval+'ms';
-  var infiniteLoop = setInterval(function(){
-    imgs[currentPic].removeAttribute('style');
-    if ( currentPic == imgs.length - 1) { currentPic = 0; } else { currentPic++; }
-    imgs[currentPic].style.webkitAnimation = 'fadey '+interval+'ms';
-    imgs[currentPic].style.animation = 'fadey '+interval+'ms';
-  }, interval);
+// imgs = document.getElementById('slideshow').children;
+imgs = document.getElementsByTagName("IMG")
+	interval = 8000, currentPic = 0;
+	imgs[currentPic].style.webkitAnimation = 'fadey '+interval+'ms';
+	imgs[currentPic].style.animation = 'fadey '+interval+'ms';
+	var infiniteLoop = setInterval(function(){
+		imgs[currentPic].removeAttribute('style');
+		if ( currentPic == imgs.length - 1) { currentPic = 0; } else { currentPic++; }
+		imgs[currentPic].style.webkitAnimation = 'fadey '+interval+'ms';
+		imgs[currentPic].style.animation = 'fadey '+interval+'ms';
+	}, interval);
 }
 //////////////////////////////////////////////////////////////////////
 </script>
