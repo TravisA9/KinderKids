@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Tester</title>
+</head>
+<body style="background:#222;">
+<style type="text/css">
+	button{
+		border-bottom: 0px;
+		background: white;
+		margin-bottom: 0px;
+		padding: 3px 10px 3px 10px;
+		border-radius: 5px 5px 0px 0px;
+	}
+	button:hover{background: pink;}
+</style>
+
+
+
+<!-- <button onclick="start()"></button> -->
+<button onclick="restart()">New</button>
+<button id="pause" onclick="start()">Pause</button>
+<br>
+<canvas id="myCanvas" width="350" height="350" style="background: white;">
+Your browser does not support the HTML canvas tag.</canvas>
+<div id="controls" style="width:450px; border: medium solid steelblue; border-radius: 9px; padding: 8px; display: inline-block; vertical-align: top;">
+	<div style="width:220px; vertical-align: top; display:inline-block;">
+		<h3 style="text-align: center; color:steelblue;">Vendors</h3>
+		<span style="float:right; color:white;">Number: <input type="number" id="sellers" value="100" style="width:60px;"></span><br>
+		<span style="float:right; color:white;">Expectation: <input type="number" id="sellerExp" value="100" style="width:60px;"></span><br>
+		<span style="float:right; color:white;">Prodution Cost: <input type="number" id="cost" value="50" style="width: 60px;"></span>
+	</div>
+	<div style="width:220px; vertical-align: top; display:inline-block;">
+		<h3 style="text-align: center; color:steelblue;">Buyers</h3>
+		<span style="float:right; color:white;">Number: <input type="number" id="buyers" value="100" style="width:60px;"></span><br>
+		<span style="float:right; color:white;">Expectation: <input type="number" id="buyerExp" value="100" style="width:60px;"></span><br>
+
+		<span style="float:right; color:white;">Limit: <input type="number" id="limit" value="100" style="width: 60px;"></span>
+	</div>
+		
+</div>
+<div id="controls" style="font-size:18px; max-width:65%; border: medium solid steelblue; border-radius: 9px; padding: 8px; display: inline-block; vertical-align: top;color:white;">	
+		<h3>Notes:</h3>
+	<ol>
+	<li>Green are Vendors; blue are buyers.</li>
+	<li>Gray indicates that no sale/purchase agreement was made.</li>
+	<li>I have integrated a sigma function to keep the values withing the acceptable range. It is logical because, for example, the seller resists more as the price gets closer to production cost and the buyer is less likly to buy as the price approaches his limit.</li>
+	<li>The red graph is draw in two stages. The first is the proportion of sale/no-sale for a set time period. After that, the data is sorted and redrawn to show the amount of how frequently a given proportion of were attained.</li>
+	<li>Competition between Sellers will tend to drive prices down.</li>
+	<li>Competition between Buyers will tend to drive prices up.</li>
+	</ol>
+</div>
+
+
+
+<script>
+//////////////////////////////////////////////////////////////////////////////////
+blacks = [], reds = []; // blacksales = [], 
+redsales = [];
+range = [50,100];
+//////////////////////////////////////////////////////////////////////////////////
+randRange = (r) => r[0] + ( Math.random() * (r[1]-r[0]) )
+chooseOne = (x) => Math.floor( Math.random() * x.length )
+//////////////////////////////////////////////////////////////////////////////////
+function SetUp( black, red ){
+
+	var sell = $('sellerExp').value, buy = $('buyerExp').value, e=0;
+	for(var b = 0; b < black; b++){
+		if(sell==''){ e = randRange(range);	}
+		else{ let val = parseInt(sell)
+			e = (Math.random()*20)+(sell-10);
+		}
+
+		blacks.push({ limit:e, sale:0 })
+	}
+
+	for(var r = 0; r < red; r++){
+		if(buy==''){ e = randRange(range);	}
+		else{ let val = parseInt(buy)
+			e = (Math.random()*20)+(buy-10);
+		} 
+
+		reds.push({ limit:e, sale:0 }); // , layalty:p
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+function newRound(){
+
+	blacks.map(a=>a.sale=0);
+	reds.map(a=>a.sale=0);
+
+	for (var i = 0; i < 30; i++){
+		var vendor = blacks[chooseOne(blacks)];
+		var buyer = reds[chooseOne(reds)];
+		var diff = (buyer.limit + vendor.limit )*.5;
+		
+		if(vendor.limit < buyer.limit){ // SALE!
+			vendor.limit = buyer.limit = diff;
+			vendor.sale++;
+			buyer.sale++;
+		}else{ // Adjust expectations
+			if(vendor.sale==0) vendor.limit-= (vendor.limit-range[0])/10;
+			if(buyer.sale ==0)  buyer.limit += (range[1]-buyer.limit)/10;
+		}
+	}
+
+	if(redsales.length<350){
+		redsales.push(reds.reduce((a, b) => a + (b.sale || 0), 0));
+	}
+	if(redsales.length==350) redsales.sort(function(a, b){return a - b});
+
+}
+//////////////////////////////////////////////////////////////////////////////////
+$ = (sel) => document.getElementById(sel);
+//////////////////////////////////////////////////////////////////////////////////
+function tick(){
+	newRound()
+
+	var c = $("myCanvas");
+	var ctx = c.getContext("2d");
+
+	var U = 350/30;
+	ctx.strokeStyle = "#FF0000";
+		ctx.beginPath();
+		ctx.moveTo(0, redsales[0]*U);
+	for (var i = 1; i < redsales.length; i++){			
+		ctx.lineTo(i, 350-redsales[i]*U);
+	}
+		ctx.stroke(); 
+
+
+
+
+	var Unit = 350/(range[1] - range[0]);
+
+	ctx.fillStyle = "#FFFFFF11";
+	ctx.lineWidth = .4;
+	ctx.fillRect(0, 0, c.width, c.height);
+
+	for (var i = 0; i < blacks.length; i++) {
+		let x = (blacks[i].limit - range[0])*Unit
+		ctx.beginPath();
+		ctx.arc(x, 350-x, 4,0,2*Math.PI);
+
+		if(blacks[i].sale>0){ctx.fillStyle = "#00FF0033";
+			ctx.strokeStyle = "#00FF00cc";
+		}else{ctx.fillStyle = "#33333333";
+			ctx.strokeStyle = "#ccFFcccc";
+		}
+		ctx.fill();
+		ctx.stroke();
+	}
+
+	for (var i = 0; i < reds.length; i++) {
+		let x = (reds[i].limit - range[0])*Unit
+		ctx.beginPath();
+		ctx.arc(350-x, 350-x, 4,0,2*Math.PI);
+		if(reds[i].sale>0){ctx.fillStyle = "#0000FF33";
+			ctx.strokeStyle = "#0000FFCC";
+		}else{ctx.fillStyle = "#33333333";
+			ctx.strokeStyle = "#ccccFFCC";
+		}
+		ctx.fill();
+		ctx.stroke();
+	}
+
+
+}
+//////////////////////////////////////////////////////////////////////////////////
+function restart(){
+	redsales = [], reds = [], blacks = [];
+		var c = $("myCanvas");
+		var ctx = c.getContext("2d");
+		ctx.fillStyle = "#FFFFFF";
+		ctx.fillRect(0, 0, c.width, c.height);
+		ctx.stroke();
+
+	var cost  = $('cost').value  != '' ?  parseInt($('cost').value)  : 50;
+	var limit = $('limit').value != '' ?  parseInt($('limit').value) : 100;
+	range = [cost,limit];
+
+	var sellers = $('sellers').value != '' ? parseInt($('sellers').value) : 10;
+	var buyers  = $('buyers').value  != '' ? parseInt($('buyers').value)  : 10;
+	SetUp( sellers, buyers )
+
+	start()
+}
+//////////////////////////////////////////////////////////////////////////////////
+paused = true, intervalID = null;
+function start(){
+
+	if(paused){
+		$('pause').innerHTML = "Pause"
+	    intervalID = setInterval(tick, 200);
+	}else{
+		$('pause').innerHTML = "Play"
+		clearInterval(intervalID);
+	}
+
+	 paused = !paused;
+}
+//////////////////////////////////////////////////////////////////////////////////
+// function stopClock() { clearInterval(intervalID); }
+     
+//SetUp( 20, 10 )
+//////////////////////////////////////////////////////////////////////////////////
+</script> 
+
+</body>
+</html>
