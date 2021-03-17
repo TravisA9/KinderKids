@@ -5,7 +5,6 @@ A few resources related to teaching
  ## Resources:
  
  * [**Slideshow:**](https://travisa9.github.io/KinderKids/ "The website") This is just to show the art my kids have done in class. 
- * [**Simulated Ecconomy:**] Comming soon... I have to find where I put the code.
  * [**Crazy Phrase Generator:**](https://travisa9.github.io/KinderKids/Crazy%20Art.html "WIP") This is a useful tool for teaching. It will generate unique, funny sentences and phrases to use for drawing ideas or other things.
  * [**Market Equilibrium simulator:**](https://travisa9.github.io/KinderKids/MarketEqualibrium.html "Cool beans!") Simple simulation of ecconomic forces which lead to equilibrium. User can set variables such as number of agents (buyers, sellers), expectation, production cost and limit. Would be cool to flesh this out a bit more sometime.
 
