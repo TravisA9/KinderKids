@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)file:///C:/Users/ASUS/Desktop/Travis/Assignments/Chairman%20Jan%2028.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>
+<style type="text/css">
+	.section{
+		padding:5px;
+		background:#151515;
+		/*border:thin solid grey;*/
+		margin-top:50px;
+	}
+	.par{border-radius:9px;
+		width: 100%
+	   -moz-box-shadow:    inset 0 0 10px #000000;
+	   -webkit-box-shadow: inset 0 0 10px #000000;
+	   box-shadow:         inset 0 0 10px #000000;
+	   min-width: 150px;
+	   min-height: 20px;
+	}
+	body{color:#efefef;
+		background:#1a1a1d;
+		font-family: "-webkit-pictograph", Lato,"Helvetica Neue", Helvetica, arial, sans-serif;
+		font-weight: 100;
+		font-size:20px;
+	}
+	label{ display:block;
+		text-indent: 50px;
+		margin-bottom:5px;
+		padding:8px;
+		transition: all .5s;
+		vertical-align: top;
+		font-weight:100;
+	}
+	input[type=checkbox]:checked + label{
+		color:grey; 
+		font-size:10px;
+	}
+	input[type=checkbox]{}
+	h3{ margin:0; padding:20; background:#7dd6f1; line-height:2; font-weight: normal;
+		color:black; text-align:center; font-size:30px;}
+
+	*[contenteditable="true"] b, 
+	*[contenteditable="true"] i, 
+	*[contenteditable="true"] ul {border:thin solid lightblue; padding:1px;}
+
+	input{ position:relative; top:25px; left:5px;}
+	.box{border:thin solid #30a8d0; padding:8px;
+	 margin:10px; min-height:22px; background: #444;
+	}
+
+
+	#timer{	border-radius:7px; cursor:pointer; }
+	#timer:hover{ background:tomato; background:#26839e; }
+
+	.glass{ width:50px; height:300px; 
+		position:relative; display:inline-block; border-radius:9px; 
+		border:medium solid #7dd6f1; 
+		/*overflow:hidden;*/
+	}
+	.glass>div{
+		width: 100%; height: 85.4867%; background: rgb(39, 128, 0); 
+		position:absolute; bottom:0px; left:0px; text-align:center; 
+		color:white; border-top: thin solid grey; border-radius: 0px 0px 9px 9px; 
+			-moz-box-shadow:    inset 0 0 30px #000000;
+			-webkit-box-shadow: inset 0 0 30px #000000;
+			box-shadow:         inset 0 0 30px #000000; }
+</style>
+<!-- Begin -->
+
+
+<div id="talk" style="width:80%; margin: auto auto; padding-bottom: 50px;" >
+	
+
+	<div class="section">
+		<h3 onclick="getLimit(event)" id="phrase" class="par" contenteditable="true" >Introduction: (1)</h3>
+	</div>
+
+
+<!-- End -->
+<script type="text/javascript">
+	//////////////////////////////////////////////////////////////////////////////
+$ = (sel) => document.getElementById(sel);
+$$ = (sel) => document.getElementsByClassName(sel);
+chooseOne = (a) => a[ Math.floor(Math.random()*a.length) ]
+remove = (elem) => elem.parentNode.removeChild(elem);
+//////////////////////////////////////////////////////////////////////////////
+var section = null
+var selected = ''
+//////////////////////////////////////////////////////////////////////////////
+window.onload = function() {
+	selected = $("phrase")
+	newDrawing()
+};
+//////////////////////////////////////////////////////////////////////////////
+	var mood = [
+					'Sad', 'Angry', 'Happy', 'Sleepy', 'Strong', 
+					'Big', 'Little', 'Ugly', 'Smart', 'Nice',					
+					// '', '', '', '', '', 
+					// '', '', '', '', '',	
+	]
+	var verb = [    'Jumping', 'Sleeping', 'Swimming', 'Flying', 'Crying', 
+					'Dancing', 'Eating', 'Walking', 'Hugging a Friend', 'Falling', 
+					'Dreaming', 'Reading a Book', 'Singing', 'Cooking', 'Driving', 
+					'Playing', 'Waiting', 'Running', 'Waiting', 'Yelling', 
+					'Talking', 'Laughing', 'Climbing', 'Painting', 'Kicking', 
+					'Fighting', 'Hanging from a Tree', 'Throwing Something', 'Sitting', 'Pushing a Rock', 
+					'Clapping', 'Drinking', 'Sneezing', 'Thinking', 'Washing', 
+					'Waking Up', 'Calling on the Phone', 'Writing', 'Throwing Trash Away', 'Riding a Bike', 
+					'Giving a Gift', 'Doing Exercise', 'Going to School', 'Pulling a Waggon', 'Building', 
+					'Studying', 'Teaching', 'Asking a Question', 'Counting', 'Digging a Hole', 
+					// '', '', '', '', '', 
+					// '', '', '', '', '', 
+					]
+	var thing = [   'Man', 'Potato', 'Penguin', 'Kitty', 'Whale', 
+					'Flower', 'Chair', 'Shoe', 'Rainbow', 'Fish',
+					'Tiger', 'Apple', 'Egg', 'Pencil', 'Heart', 
+					'Pig', 'Duck', 'Cow', 'Sun', 'Chicken', 
+					'Zebra', 'Tomato', 'Banana', 'Snowman', 'Doll', 
+					'Cake', 'Ice Cream', 'Frog', 'Girl', 'Boy', 
+					'Strawberry', 'Tablet', 'Flower', 'Sheep', 'Moon',
+					'Mother', 'Grandfather', 'Fan', 'Doctor', 'Giraffe',
+					'House', 'Hamburger', 'Gift', 'Bat', 'Book',
+					'Baby', 'Boat', 'Bucket', 'Dolphin', 'Candy',
+					'Star', 'Tree', 'Book', 'Pig', 'Cup', 
+					// '', '', '', '', '', 
+					]
+Feeling = true, Action = true, Thing = true, Article = true
+//////////////////////////////////////////////////////////////////////////////
+function toggle(val){
+	val = !val;
+	console.log(val)
+}
+//////////////////////////////////////////////////////////////////////////////
+var thisAction = 1, thisThing = 1, thisFeeling = 1
+chooseIndex = (a) => Math.floor(Math.random()*a.length)
+
+function getRandoms(){
+	thisAction = chooseIndex(verb)
+	thisThing = chooseIndex(thing)
+	thisFeeling = chooseIndex(mood)
+}
+//////////////////////////////////////////////////////////////////////////////
+function newDrawing(){
+	time = " (4)"
+	var str = '', article = "A "
+	getRandoms()
+
+	if(Feeling){ str += mood[thisFeeling] + ' '; }
+	if(Thing){ str += thing[thisThing]; }
+	if(Action){ str += " is " + verb[thisAction]; }
+
+	if(str[0] == 'A' || str[0] == 'E' || str[0] == 'I' || str[0] == 'O' || str[0] == 'U'){ article = "An "; }
+
+	$('phrase').innerHTML = article + str + ' ' + time
+}
+//////////////////////////////////////////////////////////////////////////////
+var myVar = null, time = 0, limit = 0, min = 60000
+colors = [  '#0bff00', '#50f700', '#6eee00', '#83e600', 
+			'#95dd00', '#a5d400', '#b2ca00', '#bec000', 
+
+			'#c9b600', '#d2ac00', '#dba100', '#e39600', 
+			
+			'#ea8a00', '#f07e00', '#f47000', '#f96200', 			
+			'#fc5300', '#fe4200', '#ff2c00', '#ff0000'   ]
+//////////////////////////////////////////////////////////////////////////////
+function myTimer() {
+	var d = new Date()-time;
+	
+	var seconds = Math.floor((limit-d)/1000)
+	if(seconds<1){
+		var sec = Math.abs(seconds)
+		$("timer").innerHTML = "-" + Math.floor(sec/60) + ":"  + Math.floor(sec%60);
+	}else{
+		$("timer").innerHTML = Math.floor(seconds/60) + ":"  + Math.floor(seconds%60);
+	}
+
+	// $('timer').style.height = `${timeLeft}%`
+	var unit = 100/limit
+	var percent =(limit-d)*unit
+	var pctLeft = 100-Math.floor((limit-d)*unit)
+	$('timer').parentNode.style.height = `${percent}%`
+
+	var color = colors[Math.floor((colors.length/100)*pctLeft)]
+	$('timer').parentNode.style.backgroundColor = `${color}`
+}
+//////////////////////////////////////////////////////////////////////////////
+function start(){
+	time = new Date();
+	myVar = setInterval(myTimer ,100);
+}
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+function getLimit(event){
+	var str = event.target.innerHTML
+	var found = str.match(/\(([:\d]+)\s*(?:min\.*)*\)/g)[0].match(/\d+/g)
+	if(found.length==1){ limit = parseInt(found[0])*min;
+	}else{ limit = (parseInt(found[0])*min)*60 + parseInt(found[1])*min; }
+
+	start(myVar)
+}
+//////////////////////////////////////////////////////////////////////////////
+function togleTimer(){
+	if(limit == d){ clearInterval(myVar); }
+}
+//////////////////////////////////////////////////////////////////////////////
+</script>
+
+<!-- ////////////////////////////////////////////////////////////////////////////// -->
+
+<div style="position:fixed; left:10px; top:10px;">
+	<div class="glass"><div style="height: 15.82%; background-color: rgb(254, 66, 0);"><div id="timer" onclick="clearInterval(myVar);">0:9</div></div></div>
+</div>
+
+<div style="position:fixed; right:10px; bottom:10px;">
+
+		<button onclick="newDrawing()">Next!</button> <br><br>
+		<button onclick="Feeling = !Feeling;">Feeling</button> <br>
+		<button onclick="Action = !Action;">Action</button> <br>
+		<button onclick="Thing = !Thing;">Thing</button> <br>
+		<button onclick="Article = !Article;">A / An</button> <br>
+</div>
+<!-- ////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+
+</div></body></html>
