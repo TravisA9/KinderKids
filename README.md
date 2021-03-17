@@ -21,4 +21,4 @@ A few resources related to teaching
  5. Scroll through 10 or 20 pages of the document to ensure that those pages are generated* and click "Generate". This should save all of the existing pages at once into the directory of your choice.
  6. Repeat step #5 until you have the whole document.
  
- **Explanation:** The document portions are usually generated or destryed depending on scroll position to limit memory use. This means that you will have to save the document in a few chunks if there are many pages.
+ **Explanation:** The document portions are usually generated (or destryed) depending on scroll position to limit memory use. This means that you will have to save the document in a few chunks if there are many pages.
